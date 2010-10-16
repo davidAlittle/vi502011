@@ -1,0 +1,9 @@
+; 3DTrans.def : Declares the module parameters for the DLL.
+
+ 
+DESCRIPTION  '3DTransfo Windows Dynamic Link Library'
+
+EXPORTS
+	CKGetPluginInfo
+	CKGetPluginInfoCount
+	RegisterBehaviorDeclarations

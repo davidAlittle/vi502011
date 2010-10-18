@@ -22,7 +22,8 @@ typedef enum{
 	HDSchedulerHandle gSchedulerCallback;
 	// définition du scheduler (pour la gestion des threads pour envoi de force au bras notamment)
 	vec3 g_force;
-	Mode g_selecMode;
+	vec3 g_position_in;
+	Mode g_selectMode;
 
 	bool g_doExit;
 	// variable de définition de la désactivation
@@ -38,7 +39,7 @@ static const hduVector3Dd initialPos(0, 0, 0);
 static void init(){
 	ghHD = hdInitDevice(HD_DEFAULT_DEVICE);
 	// initialisation du bras haptique
-	g_selecMode = CAM;
+	g_selectMode = CAM;
 	/* initialisation des booléens */
 	g_doExit = false;
 }
@@ -54,14 +55,12 @@ static void exit(){
 	// suppression des informations à envoyer
 }
 
-//simulation loop
-static void simStep(){
-
+// changement de mode.
+static void changeMode(){
+	if(g_selectMode == CAM){g_selectMode = CATCH;}
+	else{g_selectMode = CAM;}
 }
 
-static void simLoop(){
-
-}
 
 static void setForce(){
 
@@ -94,13 +93,16 @@ HDCallbackCode HDCALLBACK startManipulationCallBack(void *pUserData){
 	
 	switch(g_selectMode){
 		case CAM:
+		// si on est dans le mode camera
 			{
 				break;
 			}
 		case CATCH:
+		// si on est dans le mode "attraper un bloc"
 			{
 				break;
 		    }
+	}
 
 
 	/* fin de la manipulation */
@@ -112,7 +114,35 @@ HDCallbackCode HDCALLBACK startManipulationCallBack(void *pUserData){
 
 // boucle de manipulation ??
 void startManipulation(){
+
+	ghHD = HD_INVALID_HANDLE;
+	gSchedulerCallback = HD_INVALID_HANDLE;
+	bool returnValue = true;
+	int devideID = 0;
+
+	HDErrorInfo error;
+    // Initialize the device.  This needs to be called before any actions on the
+    // device.
+    ghHD = hdInitDevice(HD_DEFAULT_DEVICE);
+    if (HD_DEVICE_ERROR(error = hdGetError()))
+		returnValue = false;
+    
+    hdEnable(HD_FORCE_OUTPUT);
+    hdEnable(HD_MAX_FORCE_CLAMPING);
+
+	// initialize amplitude for vibration
+	// TODO
+
+	// mise en attente du device
     hdScheduleSynchronous(startManipulationCallBack, 0,
                           HD_DEFAULT_SCHEDULER_PRIORITY);
 	// synchronization du scheduer avec les "actions"  ???
+
+
+    hdStartScheduler();
+    if (HD_DEVICE_ERROR(error = hdGetError()))
+		returnValue = false;
+
+	atexit(exit);
+
 }

@@ -24,6 +24,9 @@ typedef enum{
 	vec3 g_force;
 	vec3 g_position_in;
 	Mode g_selectMode;
+	
+	hduVector3Dd force_active;
+	hduVector3Dd standard_force(10, 10, 10);
 
 	bool g_doExit;
 	// variable de définition de la désactivation
@@ -34,7 +37,7 @@ typedef enum{
 	bool g_button3; //INK
 	vec3 g_position_out;
 
-static const hduVector3Dd initialPos(0, 0, 0);
+static const hduVector3Dd v_initial_position(0, 0, 0);
 
 static void init(){
 	ghHD = hdInitDevice(HD_DEFAULT_DEVICE);
@@ -62,8 +65,18 @@ static void changeMode(){
 }
 
 
-static void setForce(){
+static void setForce(hduVector3Dd f){
+	force_active = f;
+	// todo : ajouter une force active maximale et minimale.
+}
 
+static void addForce(hduVector3Dd f){
+	force_active +=f;
+	// todo : ajouter une force active maximale et minimale.
+}
+
+static hduVector3Dd getForce(){
+	return force_active;
 }
 
 // les réalisation des manipulations
@@ -71,7 +84,7 @@ static void setForce(){
 HDCallbackCode HDCALLBACK startManipulationCallBack(void *pUserData){
 	hduVector3Dd v_position;
 	// vector3d de type double	
-	hduVector3Dd v_force((double) g_force.x, (double) g_force.y, (double) g_force.z);
+	hduVector3Dd v_force;
 	// définition du vecteur force que l'on souhaite associer
 	int button;
 
@@ -95,11 +108,32 @@ HDCallbackCode HDCALLBACK startManipulationCallBack(void *pUserData){
 		case CAM:
 		// si on est dans le mode camera
 			{
+
+				g_position_out.v[0] = (float)v_position[0];
+				g_position_out.v[1] = (float)v_position[1];
+				g_position_out.v[2] = (float)v_position[2];
+
+				//hduVecSubtract(force, v_initial_position, v_position);
+				//hduVecScaleInPlace(force, stiffness);
+				
+				//force = 
+				//hdSetDoublev(HD_CURRENT_FORCE, force);
+				// définition de la force de retour à donner au bras
+
 				break;
 			}
 		case CATCH:
 		// si on est dans le mode "attraper un bloc"
 			{
+
+				/* déplacement de la main */
+				g_position_out.v[0] = (float)v_position[0];
+				g_position_out.v[1] = (float)v_position[1];
+				g_position_out.v[2] = (float)v_position[2];
+				
+				/* ajout de la force de retour*/
+				hdSetDoublev(HD_CURRENT_FORCE, standard_force);
+
 				break;
 		    }
 	}
@@ -131,7 +165,7 @@ void startManipulation(){
     hdEnable(HD_MAX_FORCE_CLAMPING);
 
 	// initialize amplitude for vibration
-	// TODO
+	// TODO 
 
 	// mise en attente du device
     hdScheduleSynchronous(startManipulationCallBack, 0,

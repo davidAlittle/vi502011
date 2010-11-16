@@ -25,8 +25,8 @@ typedef enum{
 	vec3 g_position_in;
 	Mode g_selectMode;
 	
-	hduVector3Dd force_active;
-	hduVector3Dd standard_force(10, 10, 10);
+	hduVector3Dd force_active(100.0, 100.0, 100.0);
+	hduVector3Dd standard_force(100.0, 100.0, 100.0);
 
 	bool g_doExit;
 	// variable de définition de la désactivation
@@ -65,13 +65,17 @@ static void changeMode(){
 }
 
 
-static void setForce(hduVector3Dd f){
-	force_active = f;
-	// todo : ajouter une force active maximale et minimale.
+static void setForce(double x, double y, double z){
+	force_active[0] = x;
+	force_active[1] = y;
+	force_active[2] = z;
+		// todo : ajouter une force active maximale et minimale.
 }
 
-static void addForce(hduVector3Dd f){
-	force_active +=f;
+static void addForce(double x, double y, double z){
+	force_active[0] +=x;
+	force_active[1] +=y;
+	force_active[2] +=z;
 	// todo : ajouter une force active maximale et minimale.
 }
 
@@ -81,7 +85,7 @@ static hduVector3Dd getForce(){
 
 // les réalisation des manipulations
 // retourne les valeurs possible HD_CALLBACK_DONE ou HD_CALLBACK_CONTINUE
-HDCallbackCode HDCALLBACK startManipulationCallBack(void *pUserData){
+HDCallbackCode HDCALLBACK startManipulationCallBack(void *pUserData){  //cf touchBack
 	hduVector3Dd v_position;
 	// vector3d de type double	
 	hduVector3Dd v_force;
@@ -113,12 +117,6 @@ HDCallbackCode HDCALLBACK startManipulationCallBack(void *pUserData){
 				g_position_out.v[1] = (float)v_position[1];
 				g_position_out.v[2] = (float)v_position[2];
 
-				//hduVecSubtract(force, v_initial_position, v_position);
-				//hduVecScaleInPlace(force, stiffness);
-				
-				//force = 
-				//hdSetDoublev(HD_CURRENT_FORCE, force);
-				// définition de la force de retour à donner au bras
 
 				break;
 			}
@@ -132,7 +130,7 @@ HDCallbackCode HDCALLBACK startManipulationCallBack(void *pUserData){
 				g_position_out.v[2] = (float)v_position[2];
 				
 				/* ajout de la force de retour*/
-				hdSetDoublev(HD_CURRENT_FORCE, standard_force);
+				hdSetDoublev(HD_CURRENT_FORCE, force_active);
 
 				break;
 		    }
@@ -180,3 +178,23 @@ void startManipulation(){
 	atexit(exit);
 
 }
+
+static void changeAleaForce(){
+	static HDdouble timer = 0;
+	static const hduVector3Dd direction(0, 1, 0);
+	HDdouble instRate;
+	hduVector3Dd force;
+	hdGetDoublev(HD_INSTANTANEOUS_UPDATE_RATE, &instRate);
+	timer += 1.0 / instRate;
+
+	hduVecScale(force, direction, 300 * sin(timer));
+}
+
+static float getPositionY(){
+	return (float) g_position_out.v[1];
+}
+
+static float getPositionZ(){
+	return (float) g_position_out.v[2];
+}
+ 

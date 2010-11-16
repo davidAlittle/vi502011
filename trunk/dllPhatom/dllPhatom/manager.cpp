@@ -190,6 +190,10 @@ static void changeAleaForce(){
 	hduVecScale(force, direction, 300 * sin(timer));
 }
 
+static float getPositionX(){
+	return  (float) g_position_out.v[0];
+}
+
 static float getPositionY(){
 	return (float) g_position_out.v[1];
 }

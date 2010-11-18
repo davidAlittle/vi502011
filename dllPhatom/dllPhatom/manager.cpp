@@ -1,6 +1,7 @@
 #include <HD/hd.h>
 #include <HDU/hduError.h>
 #include <HDU/hduVector.h>
+#include <tchar.h>
 
 typedef struct{
 	union{
@@ -21,6 +22,10 @@ typedef enum{
 	// définition de la device bras haptique
 	HDSchedulerHandle gSchedulerCallback;
 	// définition du scheduler (pour la gestion des threads pour envoi de force au bras notamment)
+
+	static HDint gVibrationFreq = 100; /* Hz */
+	static HDdouble gVibrationAmplitude = 0; /* N */
+
 	vec3 g_force;
 	vec3 g_position_in;
 	Mode g_selectMode;
@@ -40,6 +45,9 @@ typedef enum{
 static const hduVector3Dd v_initial_position(0, 0, 0);
 
 static void init(){
+	//DeviceSpace* OmniSpace = new DeviceSpace;
+	
+
 	ghHD = hdInitDevice(HD_DEFAULT_DEVICE);
 	// initialisation du bras haptique
 	g_selectMode = CAM;
@@ -202,3 +210,45 @@ static float getPositionZ(){
 	return (float) g_position_out.v[2];
 }
  
+ int _tmain(int argc, _TCHAR* argv[])
+{
+	
+	ghHD = HD_INVALID_HANDLE;
+	gSchedulerCallback = HD_INVALID_HANDLE;
+	bool returnValue = true;
+	int devideID = 0;
+
+	g_doExit = false;
+
+	//Initialize Haptic device
+
+	HDErrorInfo error;
+    
+    // Initialize the device.  This needs to be called before any actions on the
+    // device.
+    ghHD = hdInitDevice(HD_DEFAULT_DEVICE);
+    if (HD_DEVICE_ERROR(error = hdGetError()))
+		returnValue = false;
+    
+    hdEnable(HD_FORCE_OUTPUT);
+    hdEnable(HD_MAX_FORCE_CLAMPING);
+
+	// Initialize amplitude for move vribration
+	hdGetDoublev(HD_NOMINAL_MAX_CONTINUOUS_FORCE, &gVibrationAmplitude);
+	gVibrationAmplitude *= 0.75;
+    
+	gSchedulerCallback = hdScheduleAsynchronous(startManipulationCallBack, 0, 
+		HD_MAX_SCHEDULER_PRIORITY);
+
+    hdStartScheduler();
+    if (HD_DEVICE_ERROR(error = hdGetError()))
+		returnValue = false;
+
+	atexit(exit);
+
+	while(!g_doExit){
+		//printf("%i %i %i\n",g_button1,g_button2,g_button3);
+	}
+
+	return 0;
+}

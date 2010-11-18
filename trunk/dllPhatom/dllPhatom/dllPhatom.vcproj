@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\Users\hp\Documents\GI06\VI50\projet\svn\dllPhatom\dllPhatom\include"
+				AdditionalIncludeDirectories="&quot;C:\Program Files\SensAble\3DTouch\utilities\include&quot;;&quot;C:\Program Files\SensAble\3DTouch\include&quot;;C:\Users\hp\Documents\GI06\VI50\projet\svn\dllPhatom\dllPhatom\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;DLLPHATOM_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -64,7 +64,7 @@
 				AdditionalOptions="hd.lib"
 				AdditionalDependencies="hd.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="C:\Users\hp\Documents\GI06\VI50\projet\svn\dllPhatom\dllPhatom\include;C:\Users\hp\Documents\GI06\VI50\projet\svn\dllPhatom\dllPhatom;C:\Users\hp\Documents\GI06\VI50\projet\svn\dllPhatom\dllPhatom\lib\win32"
+				AdditionalLibraryDirectories="&quot;C:\Program Files\SensAble\3DTouch\include&quot;;&quot;C:\Program Files\SensAble\3DTouch\include\HD&quot;;&quot;C:\Program Files\SensAble\3DTouch\lib\win32&quot;;C:\Users\hp\Documents\GI06\VI50\projet\svn\dllPhatom\dllPhatom\include;C:\Users\hp\Documents\GI06\VI50\projet\svn\dllPhatom\dllPhatom;C:\Users\hp\Documents\GI06\VI50\projet\svn\dllPhatom\dllPhatom\lib\win32"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"

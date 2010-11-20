@@ -198,7 +198,7 @@ static void changeAleaForce(){
 	hduVecScale(force, direction, 300 * sin(timer));
 }
 
-static float getPositionX(){
+static float get_position_x(){
 	return  (float) g_position_out.v[0];
 }
 
@@ -221,7 +221,6 @@ static float getPositionZ(){
 	g_doExit = false;
 
 	//Initialize Haptic device
-
 	HDErrorInfo error;
     
     // Initialize the device.  This needs to be called before any actions on the

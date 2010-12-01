@@ -5,7 +5,9 @@ var angularDrag = 5.0;
 var distance = 0.2;
 var attachToCenterOfMass = false;
 
+
 private var springJoint : SpringJoint;
+
 
 function Update ()
 {
@@ -14,6 +16,7 @@ function Update ()
 		return;
 
 	var mainCamera = FindCamera();
+	
 		
 	// We need to actually hit an object
 	var hit : RaycastHit;
@@ -23,9 +26,14 @@ function Update ()
 	if (!hit.rigidbody || hit.rigidbody.isKinematic)
 		return;
 	
+	audio.Play();
+	
 	if (!springJoint)
 	{
 		var go = new GameObject("Rigidbody dragger");
+
+		
+		
 		var body : Rigidbody = go.AddComponent ("Rigidbody") as Rigidbody;
 		springJoint = go.AddComponent ("SpringJoint");
 		body.isKinematic = true;

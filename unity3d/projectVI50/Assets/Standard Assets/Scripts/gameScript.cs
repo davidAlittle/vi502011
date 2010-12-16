@@ -15,10 +15,13 @@ public class gameScript : MonoBehaviour {
 	public static extern double getX();
 	
 	[DllImport("dllVI50")]
-	public static extern bool isButton1Activate(); 
-
+	public static extern double getY();
+	
 	[DllImport("dllVI50")]
-	public static extern bool compute(); 
+	public static extern double getZ();
+	
+	[DllImport("dllVI50")]
+	public static extern bool isButton1Activate(); 
 
 	[DllImport("dllVI50")]
 	public static extern bool isButton2Activate(); 
@@ -41,16 +44,15 @@ public class gameScript : MonoBehaviour {
 	void Start() {
 		int know;
 		know = init();
-		print(know);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		//print(getX() + " / " + getY() +  " / " + getZ());
+		/*
 		double x = getRelativeXForCamera();
 		double y = getRelativeYForCamera();
 		double z = getRelativeZForCamera();
-		print(x + "   " + y + "  " + z);
 		
 		transform.localEulerAngles = new Vector3((float)-y,(float)x,0);
 		/*
@@ -65,18 +67,11 @@ public class gameScript : MonoBehaviour {
 		transform.Rotate(0, (float)x/20, 0);
 		transform.Rotate((float)z/20, 0, 0);
 		*/
-		if(Input.GetButton("Jump")){
-			exitHD();
+		if(Input.GetKeyDown ("escape")){
+			exitHD(); 
 			//Application.Quit();
 		}
 		
 	}
-	/* quit : quit de unity */
-	
-	/*void Quit(){
-		print("test");
-		exitHD();
-		Application.Quit();
-	}*/
 
 }

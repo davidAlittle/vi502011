@@ -4,19 +4,36 @@ var drag = 10.0;
 var angularDrag = 5.0;
 var distance = 0.2;
 var attachToCenterOfMass = false;
-
-
+var HaveBeenContited = false;
 private var springJoint : SpringJoint;
-
+private var isPick = false;
 
 function Update ()
 {
+	//print(rigidbody.inertiaTensor);
+	//print(rigidbody.inertiaTensorRotation);
+	var g0 = new Vector3();
+	g0 = transform.position;
+	if(g0.y<10){
+		if(isPick){
+			if(!HaveBeenContited){
+				HaveBeenContited = true;
+				GUIScript.score ++;
+			}
+		}else{
+			if(!HaveBeenContited){
+				HaveBeenContited = true;
+				GUIScript.score --;
+			}
+		}
+		Destroy(gameObject, 5);
+		//Destroy(this);
+	}
 	// Make sure the user pressed the mouse down
 	if (!Input.GetMouseButtonDown (0))
 		return;
 
 	var mainCamera = FindCamera();
-	
 		
 	// We need to actually hit an object
 	var hit : RaycastHit;
@@ -26,13 +43,14 @@ function Update ()
 	if (!hit.rigidbody || hit.rigidbody.isKinematic)
 		return;
 	
-	audio.Play();
+	if(hit.rigidbody == rigidbody){
+		audio.Play();
+		isPick = true;
+	}
 	
 	if (!springJoint)
 	{
 		var go = new GameObject("Rigidbody dragger");
-
-		
 		
 		var body : Rigidbody = go.AddComponent ("Rigidbody") as Rigidbody;
 		springJoint = go.AddComponent ("SpringJoint");
@@ -71,6 +89,7 @@ function DragObject (distance : float)
 		var ray = mainCamera.ScreenPointToRay (Input.mousePosition);
 		springJoint.transform.position = ray.GetPoint(distance);
 		yield;
+		//isPick = true;
 	}
 	if (springJoint.connectedBody)
 	{

@@ -18,6 +18,9 @@ public class DragRigidbodyWithHD : MonoBehaviour {
 	public static extern double getZ();	
 	
 	[DllImport("dllVI50")]
+	public static extern double setForceOnAxis(double x, double y, double z);	
+	
+	[DllImport("dllVI50")]
 		public static extern bool isButton1Activate();
 	
     public float spring = 50.0f;
@@ -100,14 +103,15 @@ public class DragRigidbodyWithHD : MonoBehaviour {
 			positionActual.y = (float)getY();
 			positionActual.z = (float)getZ();
 			
-            //Ray ray = mainCamera.ScreenPointToRay (Input.mousePosition);
+            // ajout de la force au bras haptique
+			setForceOnAxis(0.2, 0.2, 0.2);
 			
-            //springJoint.transform.position = ray.GetPoint(distance);
-			
-			springJoint.transform.position += 3*(positionActual - positionLast);
+			springJoint.transform.position += 5*(positionActual - positionLast);
             yield return null;
             //new yield;
         }
+		// on réinitialise les forces
+		setForceOnAxis(0, 0, 0);
         if (springJoint.connectedBody)
         {
             springJoint.connectedBody.drag = oldDrag;

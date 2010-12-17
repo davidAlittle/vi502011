@@ -33,7 +33,9 @@ public class DragRigidbodyWithHD : MonoBehaviour {
     private SpringJoint springJoint;
 	private Vector3 positionLast = new Vector3(0,0,0);
 	private Vector3 positionActual = new Vector3(0,0,0);
-	
+	private Vector3 forceHD = new Vector3(0, 0, 0);
+	private Vector3 vInertiaTensor;
+	private Vector3 diffposition = new Vector3(0, 0, 0);
     // Use this for initialization
     void Start () {
    
@@ -104,9 +106,30 @@ public class DragRigidbodyWithHD : MonoBehaviour {
 			positionActual.z = (float)getZ();
 			
             // ajout de la force au bras haptique
-			setForceOnAxis(0.2, 0.2, 0.2);
+			diffposition = (positionActual - positionLast);
+			vInertiaTensor = rigidbody.inertiaTensor;
+			if (vInertiaTensor.x>0)
+				if(diffposition.x<0)
+					forceHD.x = 0.2f;
+				else
+					forceHD.x = -0.2f;
+				
+			if (vInertiaTensor.y>0)
+				if(diffposition.y<0)
+					forceHD.y = 0.2f;
+				else
+					forceHD.y = -0.2f;
+				
+			if (vInertiaTensor.z>0)
+				if(diffposition.z<0)
+					forceHD.z = 0.2f;
+				else
+					forceHD.z = -0.2f;
 			
-			springJoint.transform.position += 5*(positionActual - positionLast);
+			// TODO orienter la force : sens opposé au mouvement.
+			setForceOnAxis((double)forceHD.x, (double)forceHD.y, (double)forceHD.z);
+			
+			springJoint.transform.position += 5*diffposition;
             yield return null;
             //new yield;
         }

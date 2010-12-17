@@ -1,0 +1,12 @@
+
+ convertion des forces en force % positif et negatif.
+Les forces sont appliquées à l'opposé du mouvement. Déplacement non pas par drag & drop
+faire interface de jeu (afficher un score.) OKI KIWI
+faire pointeur
+faire autre gestion des caméra (récupérer un bloc)
+insérer des animations. Tester les autres animations.
+
+améliorer la gestion des forces
+ajout de map.
+pouvoir activer le bouton avec le bras haptique
+supprimer le carre et pouvoir roter à partir de la positon du curseur

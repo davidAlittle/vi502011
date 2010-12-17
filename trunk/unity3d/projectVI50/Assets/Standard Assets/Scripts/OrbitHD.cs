@@ -70,16 +70,6 @@ public class OrbitHD : MonoBehaviour {
             transform.rotation = rotation;
             transform.position = position;
         }
-		else{
-		/*
-		// sinon en mode translation du pointeur.
-		px = (float)getRelativeXForPointeur();
-		py = (float)getRelativeYForPointeur();
-		
-		Vector3 trans = new Vector3(px, py, 0);
-		transform.Translate(trans * Time.deltaTime);
-		target.Translate(trans * Time.deltaTime);*/
-		}
     }
 
     static float ClampAngle (float angle, float min, float max) {

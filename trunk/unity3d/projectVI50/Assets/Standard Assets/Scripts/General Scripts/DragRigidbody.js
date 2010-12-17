@@ -12,23 +12,25 @@ function Update ()
 {
 	//print(rigidbody.inertiaTensor);
 	//print(rigidbody.inertiaTensorRotation);
+	/*
 	var g0 = new Vector3();
 	g0 = transform.position;
 	if(g0.y<10){
 		if(isPick){
 			if(!HaveBeenContited){
 				HaveBeenContited = true;
-				GUIScript.score ++;
+				GUIScript.setScore(1);
 			}
 		}else{
 			if(!HaveBeenContited){
 				HaveBeenContited = true;
-				GUIScript.score --;
+				GUIScript.setScore(-1);
 			}
 		}
 		Destroy(gameObject, 5);
 		//Destroy(this);
-	}
+		
+	}*/
 	// Make sure the user pressed the mouse down
 	if (!Input.GetMouseButtonDown (0))
 		return;

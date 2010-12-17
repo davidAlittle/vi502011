@@ -44,29 +44,13 @@ public class gameScript : MonoBehaviour {
 	void Start() {
 		int know;
 		know = init();
+		//Screen.showCursor = false;
+		// on cache le curseur
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		//print(getX() + " / " + getY() +  " / " + getZ());
-		/*
-		double x = getRelativeXForCamera();
-		double y = getRelativeYForCamera();
-		double z = getRelativeZForCamera();
-		
-		transform.localEulerAngles = new Vector3((float)-y,(float)x,0);
-		/*
-		if(Mathf.Abs((float)x)<5)
-			x = 0;
-		
-		if(Mathf.Abs((float)z)<5)
-			z = 0;
-		//transform.Translate(0, (float)y/30, 0);
-		
-		//transform.Rotate((float)z/20, (float)x/20, 0);
-		transform.Rotate(0, (float)x/20, 0);
-		transform.Rotate((float)z/20, 0, 0);
-		*/
+	
 		if(Input.GetKeyDown ("escape")){
 			exitHD(); 
 			//Application.Quit();

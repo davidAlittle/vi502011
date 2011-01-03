@@ -28,8 +28,14 @@ public class OrbitHD : MonoBehaviour {
 	public static extern bool isButton2Activate(); 
 	
 	public Transform target;
+	
+	private float angleViewMax = 90.0f;
+	private float angleViewMin = 30.0f;
 
     public float distance= 10.0f;
+	
+	private float distanceMin = 10.0f;
+	private float distanceMax = 10.0f;
 
     public float xSpeed= 250.0f;
     public float ySpeed= 120.0f;
@@ -55,15 +61,24 @@ public class OrbitHD : MonoBehaviour {
 		// si le bras est désactivé on sort
 		if(!HDIsACtivate())
 			return;
+	
 		
 		/* si on est en mode rotation */
-        if (target&&isButton2Activate()) {
+        if (target&&isButton2Activate()) {			
+			
+			Camera.main.fieldOfView = Camera.main.fieldOfView + Camera.main.fieldOfView*(float)getRelativeZForCamera() * 0.002f;
+			if(Camera.main.fieldOfView>angleViewMax )
+				Camera.main.fieldOfView = angleViewMax;
+			
+			if(Camera.main.fieldOfView<angleViewMin )
+				Camera.main.fieldOfView = angleViewMin;
+			
 			// on récupère la positon du bras
             px -= (float)getRelativeXForCamera() * 0.02f;
             py += (float)getRelativeYForCamera()  * 0.02f;
 			
             py = ClampAngle(py, yMinLimit, yMaxLimit);
-
+			
             Quaternion rotation = Quaternion.Euler(py, px, 0);
             Vector3 position = rotation * new Vector3(0.0f, 0.0f, -distance) + target.position;
 

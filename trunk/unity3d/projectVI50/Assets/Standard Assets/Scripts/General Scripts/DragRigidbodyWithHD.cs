@@ -123,8 +123,6 @@ public class DragRigidbodyWithHD : MonoBehaviour {
 		positionActual = new Vector3((float)getX(), (float)getY(), (float)getZ());
         while (isButton1Activate())
         {
-			// TODO : faire l'orientation en x et z (changement de rpéère ==> repère caméra/monde)
-			
 			positionLast = positionActual;
 			positionActual.x = (float)getX();
 			positionActual.y = (float)getY();
@@ -153,18 +151,15 @@ public class DragRigidbodyWithHD : MonoBehaviour {
 				else
 					forceHD.z = -0.2f;
 			
-			// TODO orienter la force : sens opposé au mouvement.
-			//setForceOnAxis((double)forceHD.x, (double)forceHD.y, (double)forceHD.z);
+			// ajout des forces de retour
+			setForceOnAxis((double)forceHD.x, (double)forceHD.y, (double)forceHD.z);
 		
 
 			Vector3 positionCurseur = new Vector3((float)((getX() + 225)*(Screen.width/320)), (float)(((getY() + 80)*(Screen.height/190))), 0);		
 			Ray ray = mainCamera.ScreenPointToRay(positionCurseur);
 			distance -= diffposition.z*50;
-			Vector3 buff = ray.GetPoint(distance);
-			//springJoint.transform.position = buff;
-			springJoint.transform.position = buff ;//- (ray.direction * diffposition.z*200);
+			springJoint.transform.position = ray.GetPoint(distance);
 			
-			//springJoint.transform.position += 5*diffposition;
             yield return null;
             //new yield;
         }

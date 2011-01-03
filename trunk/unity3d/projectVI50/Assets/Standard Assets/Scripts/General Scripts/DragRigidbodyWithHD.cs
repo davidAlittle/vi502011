@@ -23,6 +23,7 @@ public class DragRigidbodyWithHD : MonoBehaviour {
 	[DllImport("dllVI50")]
 		public static extern bool isButton1Activate();
 	
+	
     public float spring = 50.0f;
     public float damper = 5.0f;
     public float drag = 10.0f;
@@ -100,10 +101,13 @@ public class DragRigidbodyWithHD : MonoBehaviour {
         while (isButton1Activate())
         {
 			// TODO : faire l'orientation en x et z (changement de rpéère ==> repère caméra/monde)
+			
 			positionLast = positionActual;
 			positionActual.x = (float)getX();
 			positionActual.y = (float)getY();
 			positionActual.z = (float)getZ();
+			
+			//positionActual = transform.forward;
 			
             // ajout de la force au bras haptique
 			diffposition = (positionActual - positionLast);
@@ -128,8 +132,12 @@ public class DragRigidbodyWithHD : MonoBehaviour {
 			
 			// TODO orienter la force : sens opposé au mouvement.
 			setForceOnAxis((double)forceHD.x, (double)forceHD.y, (double)forceHD.z);
-			
-			springJoint.transform.position += 5*diffposition;
+		
+
+			Vector3 positionCurseur = new Vector3((float)((getX() + 225)*(Screen.width/320)), (float)(((getY() + 80)*(Screen.height/190))),0);		
+			Ray ray = mainCamera.ScreenPointToRay(positionCurseur);
+			springJoint.transform.position = ray.GetPoint(distance);
+			//springJoint.transform.position += 5*diffposition;
             yield return null;
             //new yield;
         }

@@ -37,6 +37,9 @@ public class DragRigidbodyWithHD : MonoBehaviour {
 	private Vector3 forceHD = new Vector3(0, 0, 0);
 	private Vector3 vInertiaTensor;
 	private Vector3 diffposition = new Vector3(0, 0, 0);
+	
+	private bool isPick = false;
+	private bool HaveBeenContited = false;
     // Use this for initialization
     void Start () {
    
@@ -44,6 +47,26 @@ public class DragRigidbodyWithHD : MonoBehaviour {
    
     // Update is called once per frame
     void Update () {
+		
+		//Update score
+		var g0 = new Vector3();
+	g0 = transform.position;
+	if(g0.y<10){
+		if(isPick){
+			if(!HaveBeenContited){
+				HaveBeenContited = true;
+				GUIScript.score++;
+			}
+		}else{
+			if(!HaveBeenContited){
+				HaveBeenContited = true;
+				GUIScript.score--;
+			}
+		}
+		Destroy(gameObject, 5);
+		//Destroy(this);
+		
+	}
         // Make sure the user pressed the mouse down
         if (!isButton1Activate())
             return;
@@ -131,12 +154,16 @@ public class DragRigidbodyWithHD : MonoBehaviour {
 					forceHD.z = -0.2f;
 			
 			// TODO orienter la force : sens opposé au mouvement.
-			setForceOnAxis((double)forceHD.x, (double)forceHD.y, (double)forceHD.z);
+			//setForceOnAxis((double)forceHD.x, (double)forceHD.y, (double)forceHD.z);
 		
 
-			Vector3 positionCurseur = new Vector3((float)((getX() + 225)*(Screen.width/320)), (float)(((getY() + 80)*(Screen.height/190))),0);		
+			Vector3 positionCurseur = new Vector3((float)((getX() + 225)*(Screen.width/320)), (float)(((getY() + 80)*(Screen.height/190))), 0);		
 			Ray ray = mainCamera.ScreenPointToRay(positionCurseur);
-			springJoint.transform.position = ray.GetPoint(distance);
+			distance -= diffposition.z*50;
+			Vector3 buff = ray.GetPoint(distance);
+			//springJoint.transform.position = buff;
+			springJoint.transform.position = buff ;//- (ray.direction * diffposition.z*200);
+			
 			//springJoint.transform.position += 5*diffposition;
             yield return null;
             //new yield;

@@ -40,7 +40,5 @@ public class GUIScript : MonoBehaviour {
 		// définition du curseur
 		positionCurseur = new Vector3((float)((getX() + 225)*(Screen.width/320)), (float)(((getY() + 80)*(Screen.height/190))),0);
 		GUI.DrawTexture(new Rect(positionCurseur.x, Screen.height- positionCurseur.y, 32, 32), curseur);
-		print(positionCurseur + " / "   + Input.mousePosition  + " / " + Screen.height);
-
 	} 
 }

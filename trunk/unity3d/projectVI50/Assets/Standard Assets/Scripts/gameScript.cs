@@ -29,17 +29,7 @@ public class gameScript : MonoBehaviour {
 	[DllImport("dllVI50")]
 	public static extern bool exitHD(); 
 	
-	[DllImport("dllVI50")]
-	public static extern double getRelativeXForCamera();
-	
-	[DllImport("dllVI50")]
-	public static extern double getRelativeYForCamera();
-	
-	[DllImport("dllVI50")]
-	public static extern double getRelativeZForCamera();
-	
-	[DllImport("dllVI50")]
-	public static extern bool setForceOnAxisX(double a, double b, double c); 
+
 	
 	void Start() {
 		int know;

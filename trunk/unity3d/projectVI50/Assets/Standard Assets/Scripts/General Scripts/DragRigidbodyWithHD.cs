@@ -48,8 +48,8 @@ public class DragRigidbodyWithHD : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 		
-		//Update score
-		var g0 = new Vector3();
+	//Update score
+	var g0 = new Vector3();
 	g0 = transform.position;
 	if(g0.y<10){
 		if(isPick){
@@ -81,7 +81,10 @@ public class DragRigidbodyWithHD : MonoBehaviour {
         if (!hit.rigidbody || hit.rigidbody.isKinematic)
             return;
        
-        audio.Play();
+       if(hit.rigidbody == rigidbody){
+		audio.Play();
+		isPick = true;
+	}
        
         if (!springJoint)
         {
@@ -160,9 +163,11 @@ public class DragRigidbodyWithHD : MonoBehaviour {
 			distance -= diffposition.z*50;
 			springJoint.transform.position = ray.GetPoint(distance);
 			
+			//isPick = true;
             yield return null;
             //new yield;
         }
+		
 		// on réinitialise les forces
 		setForceOnAxis(0, 0, 0);
         if (springJoint.connectedBody)
@@ -172,7 +177,7 @@ public class DragRigidbodyWithHD : MonoBehaviour {
             springJoint.connectedBody = null;
         }
     }
-
+	
     Camera FindCamera ()
     {
         if (camera)

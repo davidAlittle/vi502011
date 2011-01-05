@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 using System.Runtime.InteropServices;
 
-public class DragRigidbodyWithHD : MonoBehaviour {
+public class DragRigidbodyWithHDLevel1 : MonoBehaviour {
 
 	[DllImport("dllVI50")]
 	public static extern bool HDIsACtivate();	
@@ -55,12 +55,12 @@ public class DragRigidbodyWithHD : MonoBehaviour {
 		if(isPick){
 			if(!HaveBeenContited){
 				HaveBeenContited = true;
-				GUIScript.score++;
+				GUIScriptLevel1.score++;
 			}
 		}else{
 			if(!HaveBeenContited){
 				HaveBeenContited = true;
-				GUIScript.score--;
+				GUIScriptLevel1.score--;
 			}
 		}
 		Destroy(gameObject, 5);
@@ -75,7 +75,7 @@ public class DragRigidbodyWithHD : MonoBehaviour {
        
         // We need to actually hit an object
         RaycastHit hit;
-        if (!Physics.Raycast(mainCamera.ScreenPointToRay(GUIScript.positionCurseur), out hit, 100))
+        if (!Physics.Raycast(mainCamera.ScreenPointToRay(GUIScriptLevel1.positionCurseur), out hit, 100))
             return;
         // We need to hit a rigidbody that is not kinematic
         if (!hit.rigidbody || hit.rigidbody.isKinematic)

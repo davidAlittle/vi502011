@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 using System.Runtime.InteropServices;
 
-public class GUIScript : MonoBehaviour {
+public class GUIScriptLevel2 : MonoBehaviour {
 	public static int score;
 	public static Vector3 positionCurseur;
 	public Texture2D curseur;
@@ -24,17 +24,22 @@ public class GUIScript : MonoBehaviour {
 
 	void OnGUI () {
 		/* définition de la box de score */
-		GUI.Box(new Rect(10, 10, 100, 90), "jenga");
+		GUI.Box(new Rect(10, 10, 120, 150), "jenga");
 		
 		if(GUI.Button(new Rect(20, 40, 80, 20), "Reset")){
-			Application.LoadLevel(0);
+				Application.LoadLevel(1);
+		}
+		
+		if(GUI.Button(new Rect(20, 120, 100, 20), "Change level")){
+				Application.LoadLevel(0);
+
 		}
 		
 		GUI.Label(new Rect(20, 70, 80, 20), "Score : " + score);
 		
 		if(Input.GetButton("Jump")){
 			score = 0;
-			Application.LoadLevel(0);
+			Application.LoadLevel(1);
 		}
 		
 		// définition du curseur

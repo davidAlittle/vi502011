@@ -1,0 +1,1 @@
+Using a haptic device with a video game type "genga"
